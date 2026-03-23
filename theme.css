@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+
+:root {
+  /* ============================================
+     Primitive Colors
+     ============================================ */
+  --color-green-700: #606c4e;
+  --color-green-300: #bac3ab;
+  --color-gray-900: #1d1e1b;
+  --color-gray-600: #686967;
+  --color-gray-400: #a4a79f;
+  --color-gray-200: #e4e5df;
+  --color-gray-100: #f0f0ef;
+  --color-white: #ffffff;
+
+  /* ============================================
+     Semantic Color Tokens
+     ============================================ */
+  --color-icon-brand: var(--color-green-700);
+
+  --color-text-default: var(--color-gray-900);
+  --color-text-subtle: var(--color-gray-600);
+  --color-text-subtlest: var(--color-gray-400);
+
+  --color-bg-default: var(--color-white);
+  --color-bg-subtle: var(--color-gray-200);
+  --color-bg-subtlest: var(--color-gray-100);
+
+  --color-border-brand-subtle: var(--color-green-300);
+
+  /* ============================================
+     Font Families
+     ============================================ */
+  --font-family-kr: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-family-eng: 'Playfair Display', Georgia, serif;
+
+  /* ============================================
+     Font Sizes
+     ============================================ */
+  --font-size-28: 1.75rem;
+  --font-size-24: 1.5rem;
+  --font-size-22: 1.375rem;
+  --font-size-20: 1.25rem;
+  --font-size-18: 1.125rem;
+  --font-size-16: 1rem;
+  --font-size-14: 0.875rem;
+  --font-size-12: 0.75rem;
+  --font-size-10: 0.625rem;
+
+  /* ============================================
+     Font Weights
+     ============================================ */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ============================================
+     Line Heights
+     ============================================ */
+  --line-height-tight: 1.4;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+  --line-height-compact: 1;
+}

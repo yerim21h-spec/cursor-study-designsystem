@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System Preview</title>
+
+  <!-- Tailwind Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            kr: "var(--font-family-kr)",
+            eng: "var(--font-family-eng)",
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+
+  <!-- React CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+
+    :root {
+      --color-green-800: #4b5240;
+      --color-green-700: #606c4e;
+      --color-green-500: #6f7b5f;
+      --color-green-300: #bac3ab;
+      --color-green-200: #9aa689;
+      --color-green-100: #e3e6d8;
+      --color-gray-900: #1d1e1b;
+      --color-gray-600: #686967;
+      --color-gray-400: #a4a79f;
+      --color-gray-200: #e4e5df;
+      --color-gray-100: #f0f0ef;
+      --color-white: #ffffff;
+
+      --color-text-default: var(--color-gray-900);
+      --color-text-subtle: var(--color-gray-600);
+      --color-text-subtlest: var(--color-gray-400);
+      --color-text-brand: var(--color-green-700);
+      --color-text-brand-bold: var(--color-green-800);
+      --color-text-brand-subtle: var(--color-green-200);
+      --color-text-inverse: var(--color-white);
+
+      --color-bg-default: var(--color-white);
+      --color-bg-subtle: var(--color-gray-200);
+      --color-bg-subtlest: var(--color-gray-100);
+      --color-bg-brand: var(--color-green-700);
+      --color-bg-brand-subtle: var(--color-green-100);
+
+      --color-border-default: var(--color-gray-200);
+      --color-border-brand: var(--color-green-500);
+      --color-border-brand-subtle: var(--color-green-300);
+      --color-border-disabled: var(--color-gray-200);
+
+      --color-icon-brand: var(--color-green-700);
+      --color-icon-inverse: var(--color-white);
+
+      --font-family-kr: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --font-family-eng: 'Playfair Display', Georgia, serif;
+
+      --font-size-28: 1.75rem; --font-size-24: 1.5rem; --font-size-22: 1.375rem;
+      --font-size-20: 1.25rem; --font-size-18: 1.125rem; --font-size-16: 1rem;
+      --font-size-14: 0.875rem; --font-size-12: 0.75rem; --font-size-10: 0.625rem;
+
+      --font-weight-regular: 400; --font-weight-medium: 500;
+      --font-weight-semibold: 600; --font-weight-bold: 700;
+
+      --line-height-tight: 1.4; --line-height-normal: 1.5;
+      --line-height-relaxed: 1.7; --line-height-compact: 1;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-family-kr);
+      color: var(--color-text-default);
+      background: var(--color-bg-default);
+      -webkit-font-smoothing: antialiased;
+    }
+    .sidebar a.active { background: var(--color-bg-brand-subtle); color: var(--color-text-brand); font-weight: 600; }
+    .sidebar a:hover { background: var(--color-bg-brand-subtle); color: var(--color-text-brand); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useRef, useEffect } = React;
+
+    /* ═══════ Icons (SVG) ═══════ */
+    const Icon = ({ d, size = 24, stroke = true, ...p }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...p}>
+        {stroke
+          ? <path d={d} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          : <path d={d} fill="currentColor" />}
+      </svg>
+    );
+    const IconCheck = (p) => <Icon d="M5 12.5L9.5 17L19 7" {...p} />;
+    const IconClose = (p) => <Icon d="M6 6L18 18M18 6L6 18" {...p} />;
+    const IconChevronDown = (p) => <Icon d="M6 9L12 15L18 9" {...p} />;
+    const IconChevronUp = (p) => <Icon d="M18 15L12 9L6 15" {...p} />;
+    const IconChevronLeft = (p) => <Icon d="M15 18L9 12L15 6" {...p} />;
+    const IconChevronRight = (p) => <Icon d="M9 6L15 12L9 18" {...p} />;
+    const IconArrowLeft = (p) => <Icon d="M19 12H5M5 12L12 19M5 12L12 5" {...p} />;
+    const IconShoppingBag = (p) => <Icon d="M6 6H18L19 21H5L6 6Z M9 6V5C9 3.34 10.34 2 12 2C13.66 2 15 3.34 15 5V6" {...p} />;
+    const IconHeart = (p) => <Icon d="M12 21C12 21 3 14 3 8.5C3 5.46 5.46 3 8.5 3C10.2 3 11.7 3.8 12 5C12.3 3.8 13.8 3 15.5 3C18.54 3 21 5.46 21 8.5C21 14 12 21 12 21Z" {...p} />;
+    const IconHome = (p) => <Icon d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H4C3.45 21 3 20.55 3 20V9.5Z" {...p} />;
+    const IconHomeFilled = (p) => <Icon d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H4C3.45 21 3 20.55 3 20V9.5Z" stroke={false} {...p} />;
+    const IconMenu = (p) => <Icon d="M4 6H20M4 12H20M4 18H20" {...p} />;
+    const IconBrand = (p) => (
+      <svg width={p.size||24} height={p.size||24} viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/><rect x="13" y="3" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/><rect x="3" y="13" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/><rect x="13" y="13" width="8" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/></svg>
+    );
+    const IconMy = (p) => (
+      <svg width={p.size||24} height={p.size||24} viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5"/><path d="M4 20C4 17.24 7.58 15 12 15C16.42 15 20 17.24 20 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    );
+    const IconMinus = (p) => <Icon d="M6 12H18" {...p} />;
+    const IconPlus = (p) => <Icon d="M12 6V18M6 12H18" {...p} />;
+    const IconSearch = (p) => (
+      <svg width={p.size||24} height={p.size||24} viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M16 16L20 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    );
+    const StarFilled = ({size=20, ...p}) => (
+      <svg width={size} height={size} viewBox="0 0 20 20" fill="none" {...p}><path d="M10 2L12.09 7.26L18 7.64L13.45 11.38L14.82 17.06L10 14.27L5.18 17.06L6.55 11.38L2 7.64L7.91 7.26L10 2Z" fill="currentColor"/></svg>
+    );
+    const StarEmpty = ({size=20, ...p}) => (
+      <svg width={size} height={size} viewBox="0 0 20 20" fill="none" {...p}><path d="M10 2L12.09 7.26L18 7.64L13.45 11.38L14.82 17.06L10 14.27L5.18 17.06L6.55 11.38L2 7.64L7.91 7.26L10 2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+    );
+    const CheckOutline = (p) => (
+      <svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...p}><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="1.5"/><path d="M7 12L10.5 15.5L17 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    );
+    const CheckFilled = (p) => (
+      <svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...p}><rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/><path d="M7 12L10.5 15.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    );
+
+    /* ═══════ Components ═══════ */
+
+    function Button({ label="Button", variant="primary", size="default", disabled=false, prefixIcon, suffixIcon, onClick, className="" }) {
+      const sizes = { default: "h-12 px-6 text-base", medium: "h-10 px-5 text-sm", small: "h-8 px-4 text-sm" };
+      const variants = {
+        primary: { default: "text-white border-transparent", disabled: "text-gray-400 border-transparent cursor-not-allowed" },
+        outline: { default: "border text-gray-800", disabled: "border text-gray-400 cursor-not-allowed" },
+      };
+      const bg = variant === "primary"
+        ? (disabled ? "background:var(--color-bg-subtle)" : "background:var(--color-bg-brand)")
+        : (disabled ? "background:var(--color-bg-default)" : "background:var(--color-bg-default)");
+      const bc = variant === "outline" ? (disabled ? "border-color:var(--color-border-disabled)" : "border-color:var(--color-border-default)") : "";
+      const tc = variant === "primary"
+        ? (disabled ? "color:var(--color-text-subtlest)" : "color:var(--color-text-inverse)")
+        : (disabled ? "color:var(--color-text-subtlest)" : "color:var(--color-text-default)");
+
+      return (
+        <button type="button" disabled={disabled} onClick={onClick}
+          className={`inline-flex items-center justify-center gap-2.5 rounded font-semibold transition-colors ${sizes[size]} ${variant==="outline"?"border":""} ${className}`}
+          style={{ [bg.split(":")[0]]: bg.split(":")[1], borderColor: bc ? bc.split(":")[1] : undefined, color: tc.split(":")[1] }}>
+          {prefixIcon && <span className="shrink-0 w-6 h-6">{prefixIcon}</span>}
+          <span>{label}</span>
+          {suffixIcon && <span className="shrink-0 w-6 h-6">{suffixIcon}</span>}
+        </button>
+      );
+    }
+
+    function Badge({ label="badge", type="default", size="small" }) {
+      const bg = type === "bold" ? "var(--color-bg-brand)" : "var(--color-bg-brand-subtle)";
+      const tc = type === "bold" ? "var(--color-text-inverse)" : "var(--color-text-brand-bold)";
+      const sz = size === "medium" ? "px-2 py-1 text-xs" : "px-1 py-0.5";
+      return <span className={`inline-flex items-center justify-center rounded-sm whitespace-nowrap ${sz}`} style={{background:bg,color:tc,fontSize: size==="small"?"0.625rem":"0.75rem"}}>{label}</span>;
+    }
+
+    function CheckMark({ checked, onChange }) {
+      return (
+        <button type="button" onClick={() => onChange(!checked)} className="shrink-0 w-6 h-6 cursor-pointer" style={{color: checked ? "var(--color-icon-brand)" : "var(--color-text-subtlest)"}}>
+          {checked ? <CheckFilled /> : <CheckOutline />}
+        </button>
+      );
+    }
+
+    function Rating({ value=0, max=5, readOnly=true, onChange, color="primary" }) {
+      const fc = color==="primary" ? "var(--color-icon-brand)" : "var(--color-text-subtlest)";
+      const ec = "var(--color-border-default)";
+      return (
+        <div className="inline-flex items-center">
+          {Array.from({length:max},(_,i) => (
+            <button key={i} type="button" disabled={readOnly} onClick={() => !readOnly && onChange?.(i+1)} className={readOnly?"":"cursor-pointer"}>
+              {i < value ? <StarFilled style={{color:fc}} /> : <StarEmpty style={{color:ec}} />}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    function InputField({ placeholder="Placeholder", value="", onChange, disabled=false, variant="textfield", suffix, label, className="" }) {
+      const [focused, setFocused] = useState(false);
+      const bc = disabled ? "var(--color-border-disabled)" : focused ? "var(--color-border-brand)" : "var(--color-border-default)";
+      const bg = disabled ? "var(--color-bg-subtlest)" : "var(--color-bg-default)";
+      const isTA = variant === "textarea";
+      return (
+        <div className={className}>
+          {label && <label className="block mb-1.5 text-sm font-semibold" style={{color:"var(--color-text-default)"}}>{label}</label>}
+          <div className={`flex items-${isTA?"start":"center"} gap-2.5 rounded border px-4 transition-colors ${isTA?"py-3":"h-12"}`} style={{borderColor:bc, background:bg, opacity:disabled?0.6:1}}>
+            {isTA
+              ? <textarea className="flex-1 bg-transparent outline-none resize-none min-h-[120px]" style={{color: value?"var(--color-text-default)":"var(--color-text-subtlest)"}} placeholder={placeholder} value={value} onChange={e=>onChange?.(e.target.value)} disabled={disabled} onFocus={()=>setFocused(true)} onBlur={()=>setFocused(false)} />
+              : <input type="text" className="flex-1 bg-transparent outline-none" style={{color: value?"var(--color-text-default)":"var(--color-text-subtlest)"}} placeholder={placeholder} value={value} onChange={e=>onChange?.(e.target.value)} disabled={disabled} onFocus={()=>setFocused(true)} onBlur={()=>setFocused(false)} />}
+            {suffix && <span className="shrink-0 w-6 h-6">{suffix}</span>}
+          </div>
+        </div>
+      );
+    }
+
+    function Dropdown({ options=[], value, onChange, placeholder="Choices", disabled=false, className="" }) {
+      const [open, setOpen] = useState(false);
+      const ref = useRef(null);
+      useEffect(() => { const h = e => { if(ref.current && !ref.current.contains(e.target)) setOpen(false); }; document.addEventListener("mousedown",h); return ()=>document.removeEventListener("mousedown",h); },[]);
+      const sel = options.find(o=>o.value===value)?.label ?? placeholder;
+      return (
+        <div ref={ref} className={`relative ${className}`}>
+          <button type="button" disabled={disabled} onClick={()=>!disabled&&setOpen(!open)}
+            className="flex items-center gap-2.5 w-full px-4 py-3 rounded border transition-colors"
+            style={{borderColor: open?"var(--color-border-brand)":"var(--color-border-default)", background:"var(--color-bg-default)", opacity:disabled?0.6:1}}>
+            <span className="flex-1 text-left" style={{color: value!=null?"var(--color-text-default)":"var(--color-text-subtlest)"}}>{sel}</span>
+            {open ? <IconChevronUp style={{color:"var(--color-text-subtle)"}} /> : <IconChevronDown style={{color:"var(--color-text-subtle)"}} />}
+          </button>
+          {open && <ul className="absolute z-10 mt-1 w-full border rounded shadow-lg max-h-60 overflow-y-auto" style={{background:"var(--color-bg-default)",borderColor:"var(--color-border-default)"}}>
+            {options.map(o => <li key={o.value}><button type="button" onClick={()=>{onChange?.(o.value);setOpen(false);}} className="w-full text-left px-4 py-3 transition-colors hover:opacity-80" style={{background: o.value===value?"var(--color-bg-brand-subtle)":"transparent", color: o.value===value?"var(--color-text-brand)":"var(--color-text-default)", fontWeight: o.value===value?600:400}}>{o.label}</button></li>)}
+          </ul>}
+        </div>
+      );
+    }
+
+    function NavigationBar({ state="home", variant="default", title="" }) {
+      const isHome = state === "home";
+      return (
+        <nav className="flex items-center justify-between w-full h-14 px-6" style={{background: isHome?"var(--color-bg-brand)":"var(--color-bg-default)"}}>
+          <div className="flex items-center gap-3">
+            {isHome ? <span className="font-semibold text-xl" style={{fontFamily:"var(--font-family-eng)",color:"var(--color-text-inverse)"}}>LOGO</span> : <IconArrowLeft style={{color:"var(--color-text-default)"}} />}
+            {!isHome && title && <span className="font-semibold text-lg" style={{color:"var(--color-text-default)"}}>{title}</span>}
+          </div>
+          {variant !== "onlyText" && <IconShoppingBag style={{color: isHome?"var(--color-icon-inverse)":"var(--color-text-default)", width:28, height:28}} />}
+        </nav>
+      );
+    }
+
+    const tabCfg = { home:{Icon:IconHome,AIcon:IconHomeFilled,l:"HOME"}, brand:{Icon:IconBrand,AIcon:IconBrand,l:"BRAND"}, my:{Icon:IconMy,AIcon:IconMy,l:"MY"}, menu:{Icon:IconMenu,AIcon:IconMenu,l:"MENU"} };
+    function TabBar({ activeTab="home", onChange }) {
+      return (
+        <nav className="flex items-center justify-between h-14 px-11 border-t" style={{background:"var(--color-bg-default)",borderColor:"var(--color-border-disabled)"}}>
+          {["home","brand","my","menu"].map(t => {
+            const c = tabCfg[t]; const a = activeTab===t; const I = a ? c.AIcon : c.Icon;
+            return <button key={t} onClick={()=>onChange?.(t)} className="flex flex-col items-center justify-center gap-1 w-7" style={{color: a?"var(--color-text-brand)":"var(--color-text-default)"}}><I /><span style={{fontSize:"0.625rem"}}>{c.l}</span></button>;
+          })}
+        </nav>
+      );
+    }
+
+    function Tab({ items=[], activeIndex=0, onChange, depth=1 }) {
+      return (
+        <div className={`flex items-center ${depth===1?"gap-3 px-6 border-b":"gap-1 px-4"}`} style={depth===1?{background:"var(--color-bg-default)",borderColor:"var(--color-border-default)",height:51}:{}}>
+          {items.map((item,i) => {
+            const label = typeof item==="string"?item:item.label;
+            const active = i===activeIndex;
+            if(depth===1) return <button key={i} onClick={()=>onChange?.(i)} className="flex items-center justify-center h-full px-3 py-5 font-semibold whitespace-nowrap" style={{color: active?"var(--color-text-brand)":"var(--color-text-subtle)", borderBottom: active?"2px solid var(--color-border-brand)":"2px solid transparent"}}>{label}</button>;
+            return <button key={i} onClick={()=>onChange?.(i)} className="px-4 py-3 rounded font-semibold text-sm whitespace-nowrap" style={{background: active?"var(--color-bg-brand)":"transparent", color: active?"var(--color-text-inverse)":"var(--color-text-subtle)"}}>{label}</button>;
+          })}
+        </div>
+      );
+    }
+
+    function Pagination({ totalPages=5, currentPage=1, onChange }) {
+      const pages = Array.from({length:Math.min(5,totalPages)},(_,i)=>{ let s=Math.max(1,currentPage-2); if(s+4>totalPages) s=Math.max(1,totalPages-4); return s+i; }).filter(p=>p<=totalPages);
+      return (
+        <div className="flex items-center justify-center gap-1 h-14 px-6">
+          <button onClick={()=>onChange?.(Math.max(1,currentPage-1))} disabled={currentPage===1} className="w-6 h-6 flex items-center justify-center" style={{color:currentPage===1?"var(--color-text-subtlest)":"var(--color-text-default)"}}><IconChevronLeft size={16} /></button>
+          {pages.map(p => <button key={p} onClick={()=>onChange?.(p)} className="w-6 h-6 flex items-center justify-center rounded-full text-xs" style={{background:p===currentPage?"var(--color-bg-brand)":"transparent",color:p===currentPage?"var(--color-text-inverse)":"var(--color-text-default)",fontWeight:p===currentPage?600:400}}>{p}</button>)}
+          <button onClick={()=>onChange?.(Math.min(totalPages,currentPage+1))} disabled={currentPage===totalPages} className="w-6 h-6 flex items-center justify-center" style={{color:currentPage===totalPages?"var(--color-text-subtlest)":"var(--color-text-default)"}}><IconChevronRight size={16} /></button>
+        </div>
+      );
+    }
+
+    function QuantityPicker({ value=1, min=1, max=99, onChange }) {
+      return (
+        <div className="inline-flex items-center gap-2">
+          <button onClick={()=>value>min&&onChange?.(value-1)} className="w-8 h-8 flex items-center justify-center rounded border" style={{borderColor:"var(--color-border-default)",color:value>min?"var(--color-text-default)":"var(--color-text-subtlest)"}}><IconMinus size={20} /></button>
+          <span className="w-8 text-center font-semibold text-sm">{value}</span>
+          <button onClick={()=>value<max&&onChange?.(value+1)} className="w-8 h-8 flex items-center justify-center rounded border" style={{borderColor:"var(--color-border-default)",color:value<max?"var(--color-text-default)":"var(--color-text-subtlest)"}}><IconPlus size={20} /></button>
+        </div>
+      );
+    }
+
+    function Modal({ open, title, body, footer="single", primaryLabel="확인", secondaryLabel="취소", onPrimary, onClose }) {
+      if(!open) return null;
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+          <div className="relative w-[342px] rounded-lg overflow-hidden" style={{background:"var(--color-bg-default)"}}>
+            <div className="flex flex-col items-center pt-8 pb-4 px-8">
+              <h2 className="font-semibold text-xl text-center w-full" style={{color:"var(--color-text-default)"}}>{title}</h2>
+            </div>
+            <div className="px-8 py-3"><p className="text-center" style={{color:"var(--color-text-default)"}}>{body}</p></div>
+            <div className="flex items-center gap-2 px-4 pt-7 pb-4">
+              {footer==="double" && <Button label={secondaryLabel} variant="outline" onClick={onClose} className="flex-1" />}
+              <Button label={primaryLabel} variant="primary" onClick={onPrimary||onClose} className="flex-1" />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ═══════ Layout ═══════ */
+    function Section({ id, title, children }) {
+      return (
+        <section id={id} className="mb-16 scroll-mt-8">
+          <h2 className="text-2xl font-semibold mb-6 pb-3 border-b-2" style={{color:"var(--color-text-default)",borderColor:"var(--color-border-brand)"}}>{title}</h2>
+          <div className="flex flex-col gap-8">{children}</div>
+        </section>
+      );
+    }
+    function Row({ label, children }) {
+      return <div><p className="text-sm font-semibold mb-3" style={{color:"var(--color-text-subtle)"}}>{label}</p><div className="flex flex-wrap items-start gap-4">{children}</div></div>;
+    }
+    function Swatch({ name, variable, hex }) {
+      return (
+        <div className="flex flex-col items-center gap-2 w-24">
+          <div className="w-16 h-16 rounded-lg border shadow-sm" style={{background:`var(${variable})`,borderColor:"var(--color-border-default)"}} />
+          <span className="text-xs font-semibold text-center leading-tight" style={{color:"var(--color-text-default)"}}>{name}</span>
+          <span style={{fontSize:"0.625rem",color:"var(--color-text-subtlest)"}}>{hex}</span>
+        </div>
+      );
+    }
+    function TypoSample({ name, style: s, sample }) {
+      return (
+        <div className="flex items-baseline gap-6 py-2 border-b" style={{borderColor:"var(--color-border-default)"}}>
+          <span className="w-40 shrink-0 text-xs font-medium" style={{color:"var(--color-text-subtle)"}}>{name}</span>
+          <span style={{...s, color:"var(--color-text-default)"}}>{sample||"다람쥐 헌 쳇바퀴에 타고파 ABCDEFG 0123456789"}</span>
+        </div>
+      );
+    }
+
+    /* ═══════ NAV ═══════ */
+    const NAV = [
+      {id:"colors",l:"Colors"},{id:"typography",l:"Typography"},{id:"logo",l:"Logo"},
+      {id:"button",l:"Button"},{id:"badge",l:"Badge / Check / Rating"},
+      {id:"input",l:"Input"},{id:"dropdown",l:"Dropdown"},
+      {id:"navbar",l:"Navigation Bar"},{id:"tabbar",l:"Tab Bar"},{id:"tab",l:"Tab"},
+      {id:"pagination",l:"Pagination"},{id:"modal",l:"Modal"},
+    ];
+
+    /* ═══════ App ═══════ */
+    function App() {
+      const [checked, setChecked] = useState(false);
+      const [rating, setRating] = useState(3);
+      const [input1, setInput1] = useState("");
+      const [input2, setInput2] = useState("");
+      const [ddVal, setDdVal] = useState(null);
+      const [aTab, setATab] = useState("home");
+      const [tIdx, setTIdx] = useState(0);
+      const [t2Idx, setT2Idx] = useState(0);
+      const [pg, setPg] = useState(1);
+      const [qty, setQty] = useState(1);
+      const [m1, setM1] = useState(false);
+      const [m2, setM2] = useState(false);
+      const ddOpts = [{value:"opt1",label:"옵션 1"},{value:"opt2",label:"옵션 2"},{value:"opt3",label:"옵션 3"}];
+
+      return (
+        <div className="flex min-h-screen">
+          {/* Sidebar */}
+          <aside className="sidebar fixed top-0 left-0 w-56 h-screen overflow-y-auto border-r py-8 px-4 z-40" style={{background:"var(--color-bg-subtlest)",borderColor:"var(--color-border-default)"}}>
+            <div className="mb-8"><span className="font-semibold text-xl" style={{fontFamily:"var(--font-family-eng)",color:"var(--color-text-brand)"}}>Design System</span></div>
+            <nav className="flex flex-col gap-1">
+              {NAV.map(({id,l}) => <a key={id} href={`#${id}`} className="text-sm px-3 py-2 rounded transition-colors" style={{color:"var(--color-text-subtle)"}}>{l}</a>)}
+            </nav>
+          </aside>
+
+          {/* Main */}
+          <main className="ml-56 flex-1 px-10 py-10 max-w-5xl">
+            <header className="mb-12">
+              <h1 className="text-3xl font-semibold mb-2" style={{fontFamily:"var(--font-family-eng)",color:"var(--color-text-brand)"}}>Design System</h1>
+              <p style={{color:"var(--color-text-subtle)"}}>Figma에서 추출한 디자인 토큰과 컴포넌트 라이브러리</p>
+            </header>
+
+            {/* Colors */}
+            <Section id="colors" title="Colors">
+              <Row label="Primitive — Green">
+                <Swatch name="Green 800" variable="--color-green-800" hex="#4b5240" />
+                <Swatch name="Green 700" variable="--color-green-700" hex="#606c4e" />
+                <Swatch name="Green 500" variable="--color-green-500" hex="#6f7b5f" />
+                <Swatch name="Green 300" variable="--color-green-300" hex="#bac3ab" />
+                <Swatch name="Green 200" variable="--color-green-200" hex="#9aa689" />
+                <Swatch name="Green 100" variable="--color-green-100" hex="#e3e6d8" />
+              </Row>
+              <Row label="Primitive — Gray">
+                <Swatch name="Gray 900" variable="--color-gray-900" hex="#1d1e1b" />
+                <Swatch name="Gray 600" variable="--color-gray-600" hex="#686967" />
+                <Swatch name="Gray 400" variable="--color-gray-400" hex="#a4a79f" />
+                <Swatch name="Gray 200" variable="--color-gray-200" hex="#e4e5df" />
+                <Swatch name="Gray 100" variable="--color-gray-100" hex="#f0f0ef" />
+                <Swatch name="White" variable="--color-white" hex="#ffffff" />
+              </Row>
+              <Row label="Semantic — Text">
+                <Swatch name="Default" variable="--color-text-default" hex="gray-900" />
+                <Swatch name="Subtle" variable="--color-text-subtle" hex="gray-600" />
+                <Swatch name="Subtlest" variable="--color-text-subtlest" hex="gray-400" />
+                <Swatch name="Brand" variable="--color-text-brand" hex="green-700" />
+                <Swatch name="Brand Bold" variable="--color-text-brand-bold" hex="green-800" />
+                <Swatch name="Inverse" variable="--color-text-inverse" hex="white" />
+              </Row>
+              <Row label="Semantic — Background">
+                <Swatch name="Default" variable="--color-bg-default" hex="white" />
+                <Swatch name="Subtle" variable="--color-bg-subtle" hex="gray-200" />
+                <Swatch name="Subtlest" variable="--color-bg-subtlest" hex="gray-100" />
+                <Swatch name="Brand" variable="--color-bg-brand" hex="green-700" />
+                <Swatch name="Brand Subtle" variable="--color-bg-brand-subtle" hex="green-100" />
+              </Row>
+              <Row label="Semantic — Border">
+                <Swatch name="Default" variable="--color-border-default" hex="gray-200" />
+                <Swatch name="Brand" variable="--color-border-brand" hex="green-500" />
+                <Swatch name="Brand Subtle" variable="--color-border-brand-subtle" hex="green-300" />
+              </Row>
+            </Section>
+
+            {/* Typography */}
+            <Section id="typography" title="Typography">
+              <Row label="Font Families">
+                <div className="flex flex-col gap-3 w-full">
+                  <div className="flex items-center gap-4"><span className="w-20 text-sm font-medium" style={{color:"var(--color-text-subtle)"}}>KR</span><span style={{fontFamily:"var(--font-family-kr)",fontSize:"1.125rem"}}>Pretendard — 가나다라마바사 ABCDEF 0123456789</span></div>
+                  <div className="flex items-center gap-4"><span className="w-20 text-sm font-medium" style={{color:"var(--color-text-subtle)"}}>ENG</span><span style={{fontFamily:"var(--font-family-eng)",fontSize:"1.125rem"}}>Playfair Display — The Quick Brown Fox</span></div>
+                </div>
+              </Row>
+              <Row label="Type Scale">
+                <div className="flex flex-col w-full">
+                  <TypoSample name="Header/28 Sb KR" style={{fontFamily:"var(--font-family-kr)",fontSize:"1.75rem",fontWeight:600,lineHeight:1.4}} />
+                  <TypoSample name="Header/28 Sb ENG" style={{fontFamily:"var(--font-family-eng)",fontSize:"1.75rem",fontWeight:600,lineHeight:1.4}} sample="The Quick Brown Fox Jumps Over" />
+                  <TypoSample name="Title/24 SB" style={{fontFamily:"var(--font-family-kr)",fontSize:"1.5rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Title/22 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"1.375rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Title/20 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"1.25rem",fontWeight:600,lineHeight:1.4}} />
+                  <TypoSample name="Body/18 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"1.125rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Body/16 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"1rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Body/16 Rg" style={{fontFamily:"var(--font-family-kr)",fontSize:"1rem",fontWeight:400,lineHeight:1.5}} />
+                  <TypoSample name="Body/14 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"0.875rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Body/14 Rg" style={{fontFamily:"var(--font-family-kr)",fontSize:"0.875rem",fontWeight:400,lineHeight:1.5}} />
+                  <TypoSample name="Caption/12 Sb" style={{fontFamily:"var(--font-family-kr)",fontSize:"0.75rem",fontWeight:600,lineHeight:1.5}} />
+                  <TypoSample name="Caption/12 Rg" style={{fontFamily:"var(--font-family-kr)",fontSize:"0.75rem",fontWeight:400,lineHeight:1.7}} />
+                  <TypoSample name="Caption/10 Rg" style={{fontFamily:"var(--font-family-kr)",fontSize:"0.625rem",fontWeight:400,lineHeight:1}} />
+                </div>
+              </Row>
+            </Section>
+
+            {/* Logo */}
+            <Section id="logo" title="Logo">
+              <Row label="Color On / Off">
+                <span className="font-semibold text-xl" style={{fontFamily:"var(--font-family-eng)",color:"var(--color-text-brand)"}}>LOGO</span>
+                <div className="p-4 rounded-lg" style={{background:"var(--color-bg-brand)"}}><span className="font-semibold text-xl" style={{fontFamily:"var(--font-family-eng)",color:"var(--color-text-inverse)"}}>LOGO</span></div>
+              </Row>
+            </Section>
+
+            {/* Button */}
+            <Section id="button" title="Button">
+              <Row label="Primary — Default / Medium / Small">
+                <Button label="Default" size="default" />
+                <Button label="Medium" size="medium" />
+                <Button label="Small" size="small" />
+              </Row>
+              <Row label="Primary — Disabled">
+                <Button label="Disabled" disabled />
+              </Row>
+              <Row label="Outline — Default / Disabled">
+                <Button label="Outline" variant="outline" />
+                <Button label="Disabled" variant="outline" disabled />
+              </Row>
+              <Row label="With Icons">
+                <Button label="확인" prefixIcon={<IconCheck />} />
+                <Button label="장바구니" variant="outline" suffixIcon={<IconShoppingBag />} />
+              </Row>
+            </Section>
+
+            {/* Badge / CheckMark / Rating */}
+            <Section id="badge" title="Badge / CheckMark / Rating">
+              <Row label="Badge">
+                <Badge label="NEW" type="default" size="small" />
+                <Badge label="SALE" type="bold" size="small" />
+                <Badge label="NEW" type="default" size="medium" />
+                <Badge label="SALE" type="bold" size="medium" />
+              </Row>
+              <Row label="CheckMark (click to toggle)">
+                <CheckMark checked={checked} onChange={setChecked} />
+                <span className="text-sm">{checked?"Checked":"Unchecked"}</span>
+              </Row>
+              <Row label="Rating (click stars)">
+                <Rating value={rating} readOnly={false} onChange={setRating} />
+                <span className="text-sm">{rating} / 5</span>
+              </Row>
+            </Section>
+
+            {/* Input */}
+            <Section id="input" title="Input">
+              <Row label="Text field"><InputField placeholder="입력해주세요" value={input1} onChange={setInput1} className="w-[302px]" /></Row>
+              <Row label="Text area"><InputField variant="textarea" placeholder="내용을 입력해주세요" value={input2} onChange={setInput2} className="w-[302px]" /></Row>
+              <Row label="With suffix icon"><InputField placeholder="검색" suffix={<IconSearch style={{color:"var(--color-text-subtlest)"}} />} className="w-[302px]" /></Row>
+              <Row label="Disabled"><InputField placeholder="비활성화" disabled className="w-[302px]" /></Row>
+            </Section>
+
+            {/* Dropdown */}
+            <Section id="dropdown" title="Dropdown">
+              <Row label="Default"><Dropdown options={ddOpts} value={ddVal} onChange={setDdVal} className="w-[283px]" /></Row>
+              <Row label="Disabled"><Dropdown options={ddOpts} disabled className="w-[283px]" /></Row>
+            </Section>
+
+            {/* NavigationBar */}
+            <Section id="navbar" title="Navigation Bar">
+              <Row label="State=Home"><div className="w-[390px] rounded-lg overflow-hidden"><NavigationBar state="home" /></div></Row>
+              <Row label="State=Sub"><div className="w-[390px] rounded-lg overflow-hidden border" style={{borderColor:"var(--color-border-default)"}}><NavigationBar state="sub" title="상품 상세" /></div></Row>
+              <Row label="Only Text"><div className="w-[390px] rounded-lg overflow-hidden border" style={{borderColor:"var(--color-border-default)"}}><NavigationBar state="sub" variant="onlyText" title="하위 페이지" /></div></Row>
+            </Section>
+
+            {/* TabBar */}
+            <Section id="tabbar" title="Tab Bar">
+              <Row label="Click icons"><div className="w-[390px] rounded-lg overflow-hidden border" style={{borderColor:"var(--color-border-default)"}}><TabBar activeTab={aTab} onChange={setATab} /></div></Row>
+            </Section>
+
+            {/* Tab */}
+            <Section id="tab" title="Tab">
+              <Row label="1 Depth"><div className="w-[390px] rounded-lg overflow-hidden border" style={{borderColor:"var(--color-border-default)"}}><Tab items={["전체","상의","하의","아우터","원피스"]} activeIndex={tIdx} onChange={setTIdx} depth={1} /></div></Row>
+              <Row label="2 Depth"><Tab items={["추천순","인기순","최신순"]} activeIndex={t2Idx} onChange={setT2Idx} depth={2} /></Row>
+            </Section>
+
+            {/* Pagination */}
+            <Section id="pagination" title="Pagination / Quantity Picker">
+              <Row label="Pagination"><Pagination totalPages={10} currentPage={pg} onChange={setPg} /></Row>
+              <Row label="Quantity Picker"><QuantityPicker value={qty} onChange={setQty} /><span className="text-sm">수량: {qty}</span></Row>
+            </Section>
+
+            {/* Modal */}
+            <Section id="modal" title="Modal">
+              <Row label="Click to open">
+                <Button label="1 Button Modal" variant="outline" onClick={()=>setM1(true)} />
+                <Button label="2 Button Modal" variant="outline" onClick={()=>setM2(true)} />
+              </Row>
+              <Modal open={m1} title="알림" body="변경사항이 저장되었습니다." footer="single" onClose={()=>setM1(false)} />
+              <Modal open={m2} title="삭제 확인" body="정말 삭제하시겠습니까?" footer="double" primaryLabel="삭제" secondaryLabel="취소" onPrimary={()=>setM2(false)} onClose={()=>setM2(false)} />
+            </Section>
+
+            <footer className="mt-20 pt-8 border-t text-center" style={{borderColor:"var(--color-border-default)"}}>
+              <p className="text-xs" style={{color:"var(--color-text-subtlest)"}}>Cursor Study Design System &middot; Figma MCP &rarr; React + Tailwind CSS</p>
+            </footer>
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
