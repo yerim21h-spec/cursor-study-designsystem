@@ -7,6 +7,7 @@ import {
   ProductCard,
   IconCheck, IconShoppingBag, IconHeart, IconSearch,
 } from './components';
+import MainPage from './pages/MainPage';
 
 /* ─────────────────────────── Layout helpers ─────────────────────────── */
 
@@ -96,6 +97,7 @@ function Sidebar() {
 /* ─────────────────────────── App ─────────────────────────── */
 
 export default function App() {
+  const [view, setView] = useState('design-system');
   const [checked, setChecked] = useState(false);
   const [ratingVal, setRatingVal] = useState(3);
   const [inputVal, setInputVal] = useState('');
@@ -127,18 +129,44 @@ export default function App() {
     wishlisted: false,
   };
 
+  if (view === 'main-page') {
+    return (
+      <div className="min-h-screen bg-[var(--color-bg-subtlest)]">
+        <div className="fixed top-4 left-4 z-[100]">
+          <button
+            type="button"
+            onClick={() => setView('design-system')}
+            className="px-4 py-2 rounded-lg bg-[var(--color-bg-brand)] text-[var(--color-text-inverse)] font-kr text-body-14 font-semibold shadow-lg hover:opacity-90 transition-opacity"
+          >
+            Design System
+          </button>
+        </div>
+        <MainPage />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
 
       <main className="ml-56 flex-1 px-10 py-10 max-w-5xl">
-        <header className="mb-12">
-          <h1 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)] mb-2">
-            Design System
-          </h1>
-          <p className="font-kr text-body-16 font-regular text-[var(--color-text-subtle)]">
-            Figma에서 추출한 디자인 토큰과 컴포넌트 라이브러리
-          </p>
+        <header className="mb-12 flex items-center justify-between">
+          <div>
+            <h1 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)] mb-2">
+              Design System
+            </h1>
+            <p className="font-kr text-body-16 font-regular text-[var(--color-text-subtle)]">
+              Figma에서 추출한 디자인 토큰과 컴포넌트 라이브러리
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setView('main-page')}
+            className="px-5 py-2.5 rounded-lg bg-[var(--color-bg-brand)] text-[var(--color-text-inverse)] font-kr text-body-14 font-semibold shadow hover:opacity-90 transition-opacity shrink-0"
+          >
+            Main Page Preview
+          </button>
         </header>
 
         {/* ═══════════════════ TOKENS ═══════════════════ */}

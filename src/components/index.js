@@ -26,5 +26,6 @@ export { default as Footer } from './Footer/Footer';
 export { default as Table } from './Table/Table';
 export { default as Emptyspace } from './Emptyspace/Emptyspace';
 export { default as AddressCard } from './AddressCard/AddressCard';
+export { default as UpcomingCard } from './UpcomingCard/UpcomingCard';
 
 export * from './Icons';
