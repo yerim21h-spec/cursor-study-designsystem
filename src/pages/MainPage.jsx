@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   NavigationBar, TabBar, Footer, Button, Badge, Logo,
-  ProductCard, UpcomingCard,
+  UpcomingCard,
   IconChevronRight, IconChevronDown,
 } from '../components';
 
@@ -42,12 +42,12 @@ const UPCOMING_ITEMS = [
 ];
 
 const THANKS_PICKS = [
-  { name: '키즈&베이비 50억 유산균', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product1, soldOut: true },
-  { name: 'Product name', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product2, soldOut: true },
-  { name: '키즈&베이비 50억 유산균', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product3 },
-  { name: '키즈&베이비 50억 유산균', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product4 },
-  { name: '키즈&베이비 50억 유산균', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product5 },
-  { name: '키즈&베이비 50억 유산균', badge: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product6 },
+  { name: '키즈&베이비 50억 유산균', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product1, soldOut: true },
+  { name: 'Product name', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product2, soldOut: true },
+  { name: '키즈&베이비 50억 유산균', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product3 },
+  { name: '키즈&베이비 50억 유산균', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product4 },
+  { name: '키즈&베이비 50억 유산균', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product5 },
+  { name: '키즈&베이비 50억 유산균', brand: '비포락토', originalPrice: '35,000원', salePrice: '15,800원', discount: '30%', image: product6 },
 ];
 
 /* ── Quick Links ── */
@@ -118,28 +118,28 @@ function ThanksGivingDay() {
   const slide = GIVING_DAY_SLIDES[current];
 
   return (
-    <section className="px-6 pt-10 pb-0">
-      <h2 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)] mb-[52px]">
+    <section className="px-6">
+      <h2 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)]">
         Thanks Giving Day
       </h2>
 
-      <div className="flex items-center justify-between mb-3">
+      <div className="mt-8 flex items-center justify-between mb-3">
         <CarouselIndicator current={current} total={GIVING_DAY_SLIDES.length} />
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <span className="font-kr text-body-16 font-semibold text-[var(--color-text-brand)]">
             {current + 1}
           </span>
-          <span className="text-[var(--color-text-subtlest)]">|</span>
+          <span className="w-0 h-[11px] border-l border-[var(--color-text-subtlest)]" />
           <span className="font-kr text-body-16 font-regular text-[var(--color-text-brand-subtle)] opacity-50">
             {GIVING_DAY_SLIDES.length}
           </span>
-          <button type="button" onClick={next} className="ml-1">
+          <button type="button" onClick={next}>
             <IconChevronRight className="w-5 h-5 text-[var(--color-text-subtle)]" />
           </button>
         </div>
       </div>
 
-      <div className="rounded-lg overflow-hidden mb-6 aspect-square">
+      <div className="rounded-lg overflow-hidden aspect-square">
         <img
           src={slide.image}
           alt={slide.name}
@@ -147,7 +147,7 @@ function ThanksGivingDay() {
         />
       </div>
 
-      <div className="flex flex-col gap-5 mb-6">
+      <div className="mt-6 flex flex-col gap-5">
         <p className="font-kr text-title-24 font-semibold text-[var(--color-text-brand)]">
           5일 23 : 24 : 53
         </p>
@@ -156,7 +156,7 @@ function ThanksGivingDay() {
         </p>
       </div>
 
-      <div className="border-t border-b border-[var(--color-border-default)] py-4 flex flex-col gap-4">
+      <div className="mt-6 border-t border-b border-[var(--color-border-default)] py-4 flex flex-col gap-4">
         <p className="font-kr text-body-14 font-semibold text-[var(--color-text-default)]">
           {slide.brand}
         </p>
@@ -183,7 +183,7 @@ function ThanksGivingDay() {
 
 function CuratedForYou() {
   return (
-    <section className="bg-[var(--color-bg-brand-subtle)] px-6 py-7 flex items-center gap-4">
+    <section className="bg-[var(--color-bg-brand-subtle)] px-[25px] py-[29px] flex items-center gap-4">
       <div className="flex-1 flex flex-col gap-4">
         <p className="font-eng text-title-20 font-medium text-[var(--color-text-brand-bold)]">
           Curated for You
@@ -192,7 +192,7 @@ function CuratedForYou() {
           신중하게 선별된 이번 달 아이템을 미리 체크하세요.
         </p>
       </div>
-      <div className="w-12 h-12 rounded-lg bg-transparent flex items-center justify-center shrink-0">
+      <div className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0">
         <img src={calendarSvg} alt="calendar" className="w-8 h-8" />
       </div>
     </section>
@@ -203,11 +203,11 @@ function CuratedForYou() {
 
 function UpcomingItemsSection() {
   return (
-    <section className="bg-white px-6 py-10 flex flex-col items-center gap-8">
+    <section className="bg-white flex flex-col items-center gap-8 px-6">
       <h2 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)] w-full">
         Upcoming Items
       </h2>
-      <div className="flex gap-3 w-full overflow-x-auto pb-2 -mx-6 px-6" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-3 w-full overflow-x-auto -mx-6 px-6" style={{ scrollbarWidth: 'none' }}>
         {UPCOMING_ITEMS.map((item, idx) => (
           <UpcomingCard
             key={idx}
@@ -225,11 +225,47 @@ function UpcomingItemsSection() {
   );
 }
 
+/* ── Pick Card (Figma-accurate layout) ── */
+
+function PickCard({ image, brand, name, originalPrice, discount, salePrice, soldOut }) {
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="w-[165px] h-[220px] rounded-md overflow-hidden bg-[var(--color-bg-subtlest)]">
+        {image && <img src={image} alt={name} className="w-full h-full object-cover" />}
+      </div>
+      <div className="flex flex-col gap-4 pr-5 h-[108px]">
+        <div className="flex flex-col gap-3">
+          <span className="font-kr text-caption-12 font-semibold text-[var(--color-text-default)]">
+            {brand}
+          </span>
+          <span className="font-kr text-body-14 font-regular text-[var(--color-text-default)] truncate overflow-hidden max-h-9">
+            {name}
+          </span>
+        </div>
+        <div className="flex flex-col gap-3">
+          <span className="font-kr text-caption-12 font-medium text-[var(--color-text-subtlest)] line-through">
+            {originalPrice}
+          </span>
+          <div className="flex items-center gap-1 whitespace-nowrap">
+            <span className="font-kr text-body-16 font-semibold text-[var(--color-text-brand)]">
+              {discount}
+            </span>
+            <span className="font-kr text-body-16 font-bold text-[var(--color-text-default)]">
+              {salePrice}
+            </span>
+          </div>
+        </div>
+        {soldOut && <Badge label="품절" type="default" size="small" />}
+      </div>
+    </div>
+  );
+}
+
 /* ── Thanks Picks ── */
 
 function ThanksPicksSection() {
   return (
-    <section className="px-6 py-10 flex flex-col items-center gap-8">
+    <section className="px-6 flex flex-col items-center gap-8">
       <h2 className="font-eng text-header-28 font-semibold text-[var(--color-text-brand)] w-full">
         Thanks Picks
       </h2>
@@ -237,23 +273,21 @@ function ThanksPicksSection() {
         <div className="relative">
           <div className="grid grid-cols-2 gap-x-3 gap-y-6">
             {THANKS_PICKS.map((product, idx) => (
-              <ProductCard
+              <PickCard
                 key={idx}
-                variant="home"
-                product={{
-                  name: product.name,
-                  image: product.image,
-                  badge: product.soldOut ? '품절' : undefined,
-                  originalPrice: product.originalPrice,
-                  salePrice: product.salePrice,
-                  discount: product.discount,
-                }}
+                image={product.image}
+                brand={product.brand}
+                name={product.name}
+                originalPrice={product.originalPrice}
+                discount={product.discount}
+                salePrice={product.salePrice}
+                soldOut={product.soldOut}
               />
             ))}
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-[217px] bg-gradient-to-b from-transparent to-white pointer-events-none" />
         </div>
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-[60px]">
           <Button
             label="더보기"
             variant="outline"
@@ -308,7 +342,7 @@ function HeroBanner() {
           피타니 제니스칼 애사비 샷
         </p>
       </div>
-      <div className="absolute right-6 bottom-16 bg-[var(--color-bg-dim)] rounded-md flex items-center gap-0.5 pl-2 pr-0.5 py-1">
+      <div className="absolute right-[25px] bottom-16 bg-[var(--color-bg-dim)] rounded-md flex items-center gap-0.5 pl-2 pr-0.5 py-1">
         <span className="font-kr text-body-14 font-semibold text-[var(--color-text-inverse)]">2</span>
         <span className="mx-2 w-0 h-2.5 border-l border-[var(--color-text-inverse)] opacity-50" />
         <span className="font-kr text-body-14 font-regular text-[var(--color-text-inverse)] opacity-50">5</span>
@@ -348,17 +382,19 @@ export default function MainPage() {
       <main className="flex-1 pb-14">
         <HeroBanner />
 
-        <div className="flex items-center gap-2 px-6 py-6">
-          {QUICK_LINKS.map((link) => (
-            <QuickLinkItem key={link.label} icon={link.icon} label={link.label} />
-          ))}
-        </div>
+        <div className="mt-[40px] flex flex-col gap-[60px]">
+          <div className="flex items-center gap-2 px-6">
+            {QUICK_LINKS.map((link) => (
+              <QuickLinkItem key={link.label} icon={link.icon} label={link.label} />
+            ))}
+          </div>
 
-        <ThanksGivingDay />
-        <CuratedForYou />
-        <UpcomingItemsSection />
-        <ThanksPicksSection />
-        <BrandBanner />
+          <ThanksGivingDay />
+          <CuratedForYou />
+          <UpcomingItemsSection />
+          <ThanksPicksSection />
+          <BrandBanner />
+        </div>
 
         <Footer
           links={[
