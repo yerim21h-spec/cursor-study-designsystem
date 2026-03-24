@@ -375,12 +375,12 @@ export default function MainPage() {
   const [activeTab, setActiveTab] = useState('home');
 
   return (
-    <div className="relative w-[390px] mx-auto bg-[var(--color-bg-default)] min-h-screen flex flex-col overflow-hidden shadow-2xl">
-      <div className="sticky top-0 z-30">
+    <div className="relative w-[390px] mx-auto bg-[var(--color-bg-default)] h-screen flex flex-col shadow-2xl">
+      <div className="shrink-0 z-30">
         <NavigationBar state="home" />
       </div>
 
-      <main className="flex-1 pb-14">
+      <main className="flex-1 overflow-y-auto">
         <HeroBanner />
 
         <div className="mt-[40px] flex flex-col gap-[60px]">
@@ -397,18 +397,10 @@ export default function MainPage() {
           <BrandBanner />
         </div>
 
-        <Footer
-          links={[
-            { label: '회사소개' },
-            { label: '이용약관' },
-            { label: '개인정보처리방침' },
-            { label: '이용안내' },
-          ]}
-          companyInfo="COPYRIGHT © 땡스킴 thanks_kim. ALL RIGHTS RESERVED."
-        />
+        <Footer />
       </main>
 
-      <div className="sticky bottom-0 z-30">
+      <div className="shrink-0 z-30">
         <TabBar activeTab={activeTab} onChange={setActiveTab} />
       </div>
 
