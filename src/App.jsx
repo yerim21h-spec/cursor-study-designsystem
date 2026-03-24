@@ -97,7 +97,7 @@ function Sidebar() {
 /* ─────────────────────────── App ─────────────────────────── */
 
 export default function App() {
-  const [view, setView] = useState('design-system');
+  const [view, setView] = useState('main-page');
   const [checked, setChecked] = useState(false);
   const [ratingVal, setRatingVal] = useState(3);
   const [inputVal, setInputVal] = useState('');
