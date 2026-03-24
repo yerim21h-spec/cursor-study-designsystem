@@ -28,8 +28,8 @@ export default function UpcomingCard({
       )}
 
       <div className="relative flex flex-col gap-5 w-full">
-        <div className="flex flex-col gap-3 w-[145px]">
-          <span className="font-kr text-caption-12 font-semibold text-[var(--color-text-inverse)]">
+        <div className="flex flex-col gap-3 w-[145px] leading-normal">
+          <span className="font-kr text-caption-12 font-semibold leading-normal text-[var(--color-text-inverse)]">
             {brand}
           </span>
           <span className="font-kr text-body-14 font-regular text-[var(--color-text-inverse)] truncate">
@@ -47,7 +47,7 @@ export default function UpcomingCard({
             </span>
           </div>
           {originalPrice && (
-            <span className="font-kr text-caption-12 font-medium text-[var(--color-text-subtlest)] line-through">
+            <span className="font-kr text-caption-12 font-medium leading-normal text-[var(--color-text-subtlest)] line-through">
               {originalPrice}
             </span>
           )}

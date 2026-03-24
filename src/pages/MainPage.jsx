@@ -185,7 +185,7 @@ function CuratedForYou() {
   return (
     <section className="bg-[var(--color-bg-brand-subtle)] px-[25px] py-[29px] flex items-center gap-4">
       <div className="flex-1 flex flex-col gap-4">
-        <p className="font-eng text-title-20 font-medium text-[var(--color-text-brand-bold)]">
+        <p className="font-eng text-title-20 font-medium leading-normal text-[var(--color-text-brand-bold)]">
           Curated for You
         </p>
         <p className="font-kr text-body-14 font-regular text-[var(--color-text-subtle)]">
@@ -234,16 +234,16 @@ function PickCard({ image, brand, name, originalPrice, discount, salePrice, sold
         {image && <img src={image} alt={name} className="w-full h-full object-cover" />}
       </div>
       <div className="flex flex-col gap-4 pr-5 h-[108px]">
-        <div className="flex flex-col gap-3">
-          <span className="font-kr text-caption-12 font-semibold text-[var(--color-text-default)]">
+        <div className="flex flex-col gap-3 leading-normal">
+          <span className="font-kr text-caption-12 font-semibold leading-normal text-[var(--color-text-default)]">
             {brand}
           </span>
           <span className="font-kr text-body-14 font-regular text-[var(--color-text-default)] truncate overflow-hidden max-h-9">
             {name}
           </span>
         </div>
-        <div className="flex flex-col gap-3">
-          <span className="font-kr text-caption-12 font-medium text-[var(--color-text-subtlest)] line-through">
+        <div className="flex flex-col gap-3 leading-normal">
+          <span className="font-kr text-caption-12 font-medium leading-normal text-[var(--color-text-subtlest)] line-through">
             {originalPrice}
           </span>
           <div className="flex items-center gap-1 whitespace-nowrap">
@@ -293,6 +293,7 @@ function ThanksPicksSection() {
             variant="outline"
             size="small"
             suffixIcon={<IconChevronDown className="w-5 h-5" />}
+            className="border-[var(--color-border-subtle)]"
           />
         </div>
       </div>
