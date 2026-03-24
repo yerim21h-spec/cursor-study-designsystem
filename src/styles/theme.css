@@ -9,10 +9,12 @@
   --color-green-500: #6f7b5f;
   --color-green-300: #bac3ab;
   --color-green-200: #9aa689;
+  --color-green-150: #ced3bf;
   --color-green-100: #e3e6d8;
   --color-gray-900: #1d1e1b;
   --color-gray-600: #686967;
   --color-gray-400: #a4a79f;
+  --color-gray-300: #c2c5bd;
   --color-gray-200: #e4e5df;
   --color-gray-100: #f0f0ef;
   --color-white: #ffffff;
@@ -26,6 +28,7 @@
   --color-text-brand: var(--color-green-700);
   --color-text-brand-bold: var(--color-green-800);
   --color-text-brand-subtle: var(--color-green-200);
+  --color-text-brand-subtlest: var(--color-green-150);
   --color-text-inverse: var(--color-white);
 
   /* ============================================
@@ -36,6 +39,7 @@
   --color-bg-subtlest: var(--color-gray-100);
   --color-bg-brand: var(--color-green-700);
   --color-bg-brand-subtle: var(--color-green-100);
+  --color-bg-dim: rgba(0, 0, 0, 0.4);
 
   /* ============================================
      Semantic Color Tokens — Border
@@ -43,12 +47,15 @@
   --color-border-default: var(--color-gray-200);
   --color-border-brand: var(--color-green-500);
   --color-border-brand-subtle: var(--color-green-300);
+  --color-border-subtle: var(--color-gray-300);
+  --color-border-inverse: var(--color-white);
   --color-border-disabled: var(--color-gray-200);
 
   /* ============================================
      Semantic Color Tokens — Icon
      ============================================ */
   --color-icon-brand: var(--color-green-700);
+  --color-icon-default: var(--color-gray-600);
   --color-icon-inverse: var(--color-white);
 
   /* ============================================

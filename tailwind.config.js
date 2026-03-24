@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         icon: {
+          DEFAULT: 'var(--color-icon-default)',
           brand: 'var(--color-icon-brand)',
           inverse: 'var(--color-icon-inverse)',
         },
@@ -15,6 +16,7 @@ export default {
           brand: 'var(--color-text-brand)',
           'brand-bold': 'var(--color-text-brand-bold)',
           'brand-subtle': 'var(--color-text-brand-subtle)',
+          'brand-subtlest': 'var(--color-text-brand-subtlest)',
           inverse: 'var(--color-text-inverse)',
         },
         bg: {
@@ -23,11 +25,14 @@ export default {
           subtlest: 'var(--color-bg-subtlest)',
           brand: 'var(--color-bg-brand)',
           'brand-subtle': 'var(--color-bg-brand-subtle)',
+          dim: 'var(--color-bg-dim)',
         },
         border: {
           default: 'var(--color-border-default)',
           brand: 'var(--color-border-brand)',
+          subtle: 'var(--color-border-subtle)',
           'brand-subtle': 'var(--color-border-brand-subtle)',
+          inverse: 'var(--color-border-inverse)',
           disabled: 'var(--color-border-disabled)',
         },
       },
